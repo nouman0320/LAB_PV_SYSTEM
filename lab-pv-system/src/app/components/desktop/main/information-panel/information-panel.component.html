@@ -1,15 +1,78 @@
 <div class="card" #ipanel>
     <div class="card-body">
-      <div #machineInfo class="row">
+      <div *ngIf="false" #machineInfo class="row">
           <div class="col-md-2 col-sm-5 col-xs-5 col-5">
             <h4>Lab Machine Info</h4>
           </div>
           <div class="col-md-10 col-sm-7 col-xs-7 col-7">
-            <div class="row">
-                <div class="col-3"><div class="row" style="background-color: black;color: white;justify-content:center;">PV-ID</div><div class="row" style="justify-content:center;">1234</div></div>
-                <div class="col-3"><div class="row" style="background-color: black;color: white;justify-content:center;">LAB-ID</div><div class="row" style="justify-content:center;">0</div></div>
-                <div class="col-3"><div class="row" style="background-color: black;color: white;justify-content:center;">LAB-ORDER</div><div class="row" style="justify-content:center;">Free</div></div>
-            </div>
+            <div class="table-responsive">
+            <table class="table table-sm table-dark">
+                <thead>
+                  <tr>
+                    
+                    <th scope="col">PV-ID</th>
+                    <th scope="col">LAB-ID</th>
+                    <th scope="col">LAB ORDER</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2134</td>
+                    <td>0</td>
+                    <td>Free</td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+              </div>
+          </div>
+      </div>
+
+      <div class="row" *ngIf="true">
+        <div class="col-md-2 col-sm-5 col-xs-5 col-5">
+            <h4>Lab Reg Info</h4>
+          </div>
+          <div class="col-md-10 col-sm-7 col-xs-7 col-7">
+            <div class="table-responsive">
+            <table class="table table-sm table-dark">
+                <thead>
+                  <tr>
+                    
+                    <th scope="col">LAB-ID</th>
+                    <th scope="col">City</th>
+                    <th scope="col">Area</th>
+                    <th scope="col">Phase</th>
+                    <th scope="col">Street</th>
+                    <th scope="col">Sub-Street</th>
+                    <th scope="col">Building</th>
+                    <th scope="col">Floor</th>
+                    <th scope="col">PR1</th>
+                    <th scope="col">PR2</th>
+                    <th scope="col">DR1</th>
+                    <th scope="col">DR2</th>
+                    <th scope="col">SS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>12312</td>
+                    <td>Ogden</td>
+                    <td>Clinton</td>
+                    <td>W</td>
+                    <td>102</td>
+                    <td>5</td>
+                    <td>685</td>
+                    <td>3-E</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+              </div>
           </div>
       </div>
     </div>
