@@ -5,7 +5,8 @@ import { MainComponent } from './components/desktop/main/main.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'pc-frontend', pathMatch: 'full'},
-  {path: 'pc-frontend', component: MainComponent}
+  {path: 'pc-frontend', component: MainComponent},
+  {path: 'pc-frontend/:lat/:lon/:zoom', component: MainComponent}
 ];
 
 @NgModule({

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ViewChild } from '@angular/core';
+import { ViewChild, TemplateRef, Input} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 
 @Component({
@@ -9,6 +11,9 @@ import { ViewChild } from '@angular/core';
 })
 export class MapPanelComponent implements OnInit {
 
+  
+
+  @ViewChild('optionTemplate') optionTemplate: any; // for option modal
   @ViewChild('gmap') gmapElement: any;
   map: google.maps.Map // map reference for later
 
@@ -21,12 +26,29 @@ export class MapPanelComponent implements OnInit {
   // markers on the map
   mapMarkers: any = [];
 
-  constructor() { }
+  modalRef: BsModalRef;
+  constructor(private modalService: BsModalService, public route: ActivatedRoute) {
+    this.route.params.subscribe(params => {
+      if(params['lat']){
+        if(params['lon']){
+          this.Lat = Number(params['lat']);
+          this.Lon = Number(params['lon']);
+          //console.log(this.lat);
+        }
+        if(params['zoom']){
+          this.Zoom = Number(params['zoom']);
+          //console.log("zoom: "+this.Zoom);
+        } 
+      }
+    });
+  }
 
   ngOnInit(){}
 
   ngAfterViewInit() {
     //console.log(this.gmapElement);
+    
+
     var mapProp = {
       center: new google.maps.LatLng(this.Lat, this.Lon),
       zoom: this.Zoom,
@@ -42,7 +64,13 @@ export class MapPanelComponent implements OnInit {
       position: {lat: 34.0482809, lng: -118.2437},
       icon:'assets/icons/blue_star.png',
       map: this.map,
+      cursor: 'help',
       title: 'markers'
+    });
+
+    blue_marker.addListener('rightclick', (ev)=> {
+      this.openModal(this.optionTemplate);
+      ev.stop();
     });
 
     var red_marker = new google.maps.Marker({
@@ -51,6 +79,7 @@ export class MapPanelComponent implements OnInit {
         url: 'assets/icons/red_star.png',
         anchor: new google.maps.Point(20, 20)
       },
+      cursor: 'help',
       map: this.map,
       title: 'markers'
     });
@@ -61,6 +90,7 @@ export class MapPanelComponent implements OnInit {
         url: 'assets/icons/red_triangle.png',
         anchor: new google.maps.Point(20, 20)
       },
+      cursor: 'help',
       map: this.map,
       title: 'markers'
     });
@@ -69,6 +99,7 @@ export class MapPanelComponent implements OnInit {
       position: {lat: 34.0319814, lng: -118.2396067},
       icon:'assets/icons/blue_triangle.png',
       map: this.map,
+      cursor: 'help',
       title: 'markers'
     });
 
@@ -77,6 +108,7 @@ export class MapPanelComponent implements OnInit {
       position: {lat: 34.0369814, lng: -118.2896067},
       icon:'assets/icons/rectangle.png',
       map: this.map,
+      cursor: 'help',
       title: 'markers'
     });
 
@@ -107,6 +139,10 @@ export class MapPanelComponent implements OnInit {
       }],
       map: this.map
     });
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
   }
 
 }
