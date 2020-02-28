@@ -1,8 +1,12 @@
 
-<div class="card ml-1" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0;">
+<div *ngIf="!this.isMobile" class="card ml-1" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0;">
     <div class="card-body">
         <div #gmap style="position: absolute; top: 0; right: 0; bottom: 0; left: 0;"></div>
     </div>
+</div>
+
+<div *ngIf="this.isMobile">
+      <div #gmap style="position: absolute; top: 0; right: 0; bottom: 0; left: 0;"></div>
 </div>
 
 <ng-template #optionTemplate>
@@ -17,3 +21,37 @@
         <button class="btn btn-primary ml-2">Move to</button>
     </div>
   </ng-template>
+
+
+  <ng-template #infoTemplate>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">info</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="table-responsive">
+        <table class="table table-sm table-dark">
+            <thead>
+              <tr>     
+                <th scope="col">PV-ID</th>
+                <th scope="col">LAB-ID</th>
+                <th scope="col">LAB ORDER</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2134</td>
+                <td>0</td>
+                <td>Free</td>
+              </tr>
+              
+            </tbody>
+          </table>
+          </div>
+    </div>
+  </ng-template>
+
+
+  

@@ -12,8 +12,11 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 export class MapPanelComponent implements OnInit {
 
   
+  @Input() isMobile: Boolean = false;
+
 
   @ViewChild('optionTemplate') optionTemplate: any; // for option modal
+  @ViewChild('infoTemplate') infoTemplate: any; // for info modal
   @ViewChild('gmap') gmapElement: any;
   map: google.maps.Map // map reference for later
 
@@ -68,10 +71,8 @@ export class MapPanelComponent implements OnInit {
       title: 'markers'
     });
 
-    blue_marker.addListener('rightclick', (ev)=> {
-      this.openModal(this.optionTemplate);
-      ev.stop();
-    });
+
+    
 
     var red_marker = new google.maps.Marker({
       position: {lat: 34.0559814, lng: -118.2996067},
@@ -139,6 +140,42 @@ export class MapPanelComponent implements OnInit {
       }],
       map: this.map
     });
+
+
+
+
+
+    /// listners and other things
+    if(!this.isMobile){
+      blue_marker.addListener('rightclick', (ev)=> {
+        this.openModal(this.optionTemplate);
+        ev.stop();
+      });
+    } else {
+      console.log("is mobile");
+      blue_triangle_marker.addListener('click', (ev)=> {
+        // open detail modal
+        console.log("left click");
+        this.openModal(this.infoTemplate);
+        ev.stop();
+      });
+
+      // adding location circle
+      var antennasCircle = new google.maps.Circle({
+        strokeColor: "#003399",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#003399",
+        fillOpacity: 0.35,
+        map: this.map,
+        center: {
+          lat: this.Lat,
+          lng: this.Lon
+        },
+        radius: 1000
+      });
+      this.map.fitBounds(antennasCircle.getBounds());
+    }
   }
 
   openModal(template: TemplateRef<any>) {

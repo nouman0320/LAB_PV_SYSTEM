@@ -9,6 +9,7 @@ import { MainComponent } from './components/desktop/main/main.component';
 import { MapPanelComponent } from './components/desktop/main/map-panel/map-panel.component';
 import { InformationPanelComponent } from './components/desktop/main/information-panel/information-panel.component';
 import { ControlPanelComponent } from './components/desktop/main/control-panel/control-panel.component';
+import { MobileMainComponent } from './components/mobile/mobile-main/mobile-main.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ControlPanelComponent } from './components/desktop/main/control-panel/c
     MainComponent,
     MapPanelComponent,
     InformationPanelComponent,
-    ControlPanelComponent
+    ControlPanelComponent,
+    MobileMainComponent
   ],
   imports: [
     BrowserModule,
