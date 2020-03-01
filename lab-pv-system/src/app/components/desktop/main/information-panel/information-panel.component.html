@@ -1,10 +1,18 @@
 <div class="card" #ipanel>
     <div class="card-body">
-      <div *ngIf="false" #machineInfo class="row">
-          <div class="col-md-2 col-sm-5 col-xs-5 col-5">
-            <h4>Lab Machine Info</h4>
-          </div>
-          <div class="col-md-10 col-sm-7 col-xs-7 col-7">
+
+      <div *ngIf="!this.dataService.infoPresent">
+        <h5>Select Lab-Machine or PV to view details</h5>
+      </div>
+
+
+      <div class="row" *ngIf="this.dataService.infoPresent && this.dataService.pvInfo">
+        <h4>Lab Machine Info</h4>
+      </div>
+
+      <div *ngIf="this.dataService.infoPresent && this.dataService.pvInfo" #machineInfo class="row">
+        
+          <div class="col-12">
             <div class="table-responsive">
             <table class="table table-sm table-dark">
                 <thead>
@@ -17,9 +25,9 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>2134</td>
-                    <td>0</td>
-                    <td>Free</td>
+                    <td>{{this.dataService.selectedPv.PV_ID}}</td>
+                    <td>{{this.dataService.selectedPv.LAB_ID}}</td>
+                    <td>{{this.dataService.selectedPv.LAB_order}}</td>
                   </tr>
                   
                 </tbody>
@@ -28,11 +36,11 @@
           </div>
       </div>
 
-      <div class="row" *ngIf="true">
-        <div class="col-md-2 col-sm-5 col-xs-5 col-5">
-            <h4>Lab Reg Info</h4>
-          </div>
-          <div class="col-md-10 col-sm-7 col-xs-7 col-7">
+      <div class="row" *ngIf="this.dataService.infoPresent && this.dataService.labMachineInfo">
+        <h4>Lab Reg Info</h4>
+      </div>
+      <div class="row" *ngIf="this.dataService.infoPresent && this.dataService.labMachineInfo">
+          <div class="col-12">
             <div class="table-responsive">
             <table class="table table-sm table-dark">
                 <thead>
@@ -55,19 +63,19 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>12312</td>
-                    <td>Ogden</td>
-                    <td>Clinton</td>
-                    <td>W</td>
-                    <td>102</td>
-                    <td>5</td>
-                    <td>685</td>
-                    <td>3-E</td>
-                    <td>1</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
+                    <td>{{this.dataService.selectedLabMachine.LAB_ID}}</td>
+                    <td>{{this.dataService.selectedLabMachine.City}}</td>
+                    <td>{{this.dataService.selectedLabMachine.Area}}</td>
+                    <td>{{this.dataService.selectedLabMachine.Phase}}</td>
+                    <td>{{this.dataService.selectedLabMachine.St}}</td>
+                    <td>{{this.dataService.selectedLabMachine.S_ST}}</td>
+                    <td>{{this.dataService.selectedLabMachine.Building}}</td>
+                    <td>{{this.dataService.selectedLabMachine.Floor}}</td>
+                    <td>{{this.dataService.selectedLabMachine.PR1}}</td>
+                    <td>{{this.dataService.selectedLabMachine.PR2}}</td>
+                    <td>{{this.dataService.selectedLabMachine.DR1}}</td>
+                    <td>{{this.dataService.selectedLabMachine.DR2}}</td>
+                    <td>{{this.dataService.selectedLabMachine.SS}}</td>
                   </tr>
                   
                 </tbody>

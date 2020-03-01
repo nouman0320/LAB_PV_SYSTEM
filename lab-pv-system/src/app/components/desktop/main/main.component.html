@@ -1,8 +1,14 @@
 <div>
+    
+
     <div class="row no-gutters p-1">
         <div class="col-12">
             <app-information-panel ></app-information-panel>
         </div>
+    </div>
+
+    <div *ngIf="this.dataService.pvAssignInProgress" class="row no-gutters" style="background-color:cornflowerblue;">
+        <p class="m-3" style="color: red;"> * Now click on the Lab to assign <button class="btn btn-sm btn-warning ml-2" (click)="this.dataService.pvAssignInProgress = false">Cancel</button></p>
     </div>
 
     <div class="row no-gutters p-1" style="height: 560px;">

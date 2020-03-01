@@ -17,8 +17,11 @@
       </button>
     </div>
     <div class="modal-body">
-        <button class="btn btn-primary">Assign LAB</button>
+
+      <div class="m-2">
+        <button class="btn btn-primary" (click)="onAssignButtonClick()">Assign LAB</button>
         <button class="btn btn-primary ml-2">Move to</button>
+      </div>
     </div>
   </ng-template>
 
@@ -31,25 +34,12 @@
       </button>
     </div>
     <div class="modal-body">
-      <div class="table-responsive">
-        <table class="table table-sm table-dark">
-            <thead>
-              <tr>     
-                <th scope="col">PV-ID</th>
-                <th scope="col">LAB-ID</th>
-                <th scope="col">LAB ORDER</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>2134</td>
-                <td>0</td>
-                <td>Free</td>
-              </tr>
-              
-            </tbody>
-          </table>
-          </div>
+        <app-information-panel ></app-information-panel>    
+        <div *ngIf="this.dataService.labMachineInfo && (this.dataService.selectedLabMachine.PR1 != 0 || this.dataService.selectedLabMachine.PR2 != 0 || this.dataService.selectedLabMachine.DR1 != 0 || this.dataService.selectedLabMachine.DR2 != 0 || this.dataService.selectedLabMachine.SS != 0)" class="mt-2">
+          <button (click)="assignLabToMe(this.dataService.selectedLabMachine)" class="m-1 btn btn-primary">Assign this LAB to me</button>
+          <button class="m-1 btn btn-primary">Validation started</button>
+          <button class="m-1 btn btn-primary">Validation ended</button>
+        </div>
     </div>
   </ng-template>
 

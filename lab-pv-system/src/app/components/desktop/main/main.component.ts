@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from 'src/app/serrvices/data.service';
 
 
 @Component({
@@ -9,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 export class MainComponent implements OnInit {
 
 
-  constructor() {
+  constructor(public dataService: DataService) {
    
    }
 
