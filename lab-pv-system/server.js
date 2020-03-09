@@ -97,6 +97,45 @@ mongoose.connect(mongoConnectionString, function(){
       floor: "1st"
     }).save();
 
+    new Lab({
+      lat: 34.0575725,
+      lon: -118.2659292,
+      city: "Los Angeles",
+      area: "430",
+      phase: "S-Grand",
+      st: "7",
+      s_st: " ",
+      building: "142",
+      floor: "2nd"
+    }).save();
+
+    new Lab({
+      lat: 34.0485144,
+      lon: -118.2696499,
+      city: "Los Angeles",
+      area: "214",
+      phase: "Albany",
+      st: "7",
+      s_st: " ",
+      building: "10",
+      floor: "Ground"
+    }).save();
+
+    new Lab({
+      lat: 34.0444611,
+      lon: -118.2636114,
+      city: "Los Angeles",
+      area: "245",
+      phase: "Fifth Area",
+      st: "7",
+      s_st: " ",
+      building: "12",
+      floor: "4th"
+    }).save();
+
+    //6548268, 34.0444611, -118.2636114, "Los Angeles", "245", "Fifth Area", "7", "", "12", "4th", 1, 0, 1, 1, 0
+
+
     new MachineInfo({
       lab_id: 1,
       pr1: 0,
@@ -106,14 +145,37 @@ mongoose.connect(mongoConnectionString, function(){
       ss: 0
     }).save();
 
+    new MachineInfo({
+      lab_id: 2,
+      pr1: 1,
+      pr2: 0,
+      dr1: 0,
+      dr2: 0,
+      ss: 0
+    }).save();
+
+    new MachineInfo({
+      lab_id: 3,
+      pr1: 1,
+      pr2: 1,
+      dr1: 1,
+      dr2: 0,
+      ss: 0
+    }).save();
+
+    new MachineInfo({
+      lab_id: 4,
+      pr1: 1,
+      pr2: 0,
+      dr1: 1,
+      dr2: 1,
+      ss: 0
+    }).save();
+
+
     new EgcrInfo({
       lat: 34.0367087, 
       lon: -118.163447
-    }).save();
-
-    new EgcrInfo({
-      lat: 32.0367087, 
-      lon: -100.163447
     }).save();
 
 
@@ -124,6 +186,20 @@ mongoose.connect(mongoConnectionString, function(){
       lab_order: "CCR"
     }).save();
 
+    new PvInfo({
+      lat: 34.0359263, 
+      lon: -118.2479044,
+      lab_id: 0, 
+      lab_order: "CCR"
+    }).save();
+
+
+    new PvInfo({
+      lat: 33.9903218, 
+      lon: -118.2764002,
+      lab_id: 2, 
+      lab_order: "Self"
+    }).save();
 
   }
 });

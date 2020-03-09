@@ -90,6 +90,40 @@ app.post("/api/pv-info/add", (req, res, next) => {
 //-------------------------------------------------------
 
 
+// Method to update pv-info
+app.post("/api/pv-info/update", (req, res, next) => {
+
+  console.log("update called");
+  
+  const pvItem = {
+      "lat": req.body.lat,
+      "lon": req.body.lon,
+      "lab_id": req.body.lab_id,
+      "lab_order": req.body.lab_order,
+      "pv_id": req.body.pv_id
+  };
+
+  PvInfo.findOneAndUpdate({"pv_id": req.body.pv_id}, pvItem, {new: true})
+  .then(function (pv) {
+
+
+    return res.status(200).json({
+      status: 200,
+      data: pv,
+      message: "Success"
+    });
+  })
+  .catch(function (err) {
+    return res.status(400).json({
+      status: 400,
+      message: err.message
+    });
+  });
+});
+
+//-------------------------------
+
+
 
 // get all data
 app.get("/api/egcr-info", (req, res, next) => {

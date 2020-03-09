@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { HttpClientModule } from '@angular/common/http';
+
 import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -23,6 +25,7 @@ import { MobileMainComponent } from './components/mobile/mobile-main/mobile-main
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     ModalModule.forRoot()
   ],
   providers: [],

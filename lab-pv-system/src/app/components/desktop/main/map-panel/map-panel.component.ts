@@ -89,24 +89,93 @@ export class MapPanelComponent implements OnInit {
     this.createMarkers();
   }
 
+  clearData(){
+    this.labMachineInfo = [];
+    this.pvInfo = [];
+    this.egcrInfo = [];
+    this.refreshMarkers();
+  }
 
   getData(){
+
+    this.clearData();
+
     //in this method we'll get data from webService from database but now I'm hard coding it for testing
 
     // adding to labMachineInfo Array
+
+    /*
     this.labMachineInfo.push(new LabMachineInfo(6548265, 34.0507194, -118.2688471, "Los Angeles", "1331", "W", "7", "", "12", "1st", 0, 0, 0, 0, 0));
     this.labMachineInfo.push(new LabMachineInfo(6548266, 34.0575725, -118.2659292, "Los Angeles", "430", "S-Grand", "7", "", "142", "2nd", 1, 0, 0, 0, 0));
     this.labMachineInfo.push(new LabMachineInfo(6548267, 34.0485144, -118.2696499, "Los Angeles", "214", "Albany", "7", "", "10", "Ground", 1, 1, 1, 0, 0));
-    this.labMachineInfo.push(new LabMachineInfo(6548268, 34.0444611, -118.2636114, "Los Angeles", "245", "Fifth Area", "7", "", "12", "4th", 1, 0, 1, 1, 0));
+    this.labMachineInfo.push(new LabMachineInfo(6548268, 34.0444611, -118.2636114, "Los Angeles", "245", "Fifth Area", "7", "", "12", "4th", 1, 0, 1, 1, 0));*/
+
+    this.dataService.getLabInfo().subscribe(
+      data=>{
+        const tempLab = data.data;
+        this.dataService.getMachineInfo().subscribe(
+          d => {
+            const tempMachine = d.data;
+            tempLab.forEach(lab => {
+              tempMachine.forEach(machine => {
+                //console.log(machine);
+                if(lab.lab_id == machine.lab_id){
+                  this.labMachineInfo.push(new LabMachineInfo(lab.lab_id, lab.lat, lab.lon, lab.city, lab.area, lab.phase, lab.st, lab.s_st, lab.building, lab.floor, machine.pr1, machine.pr2, machine.dr1, machine.dr2, machine.ss));
+                  //console.log("found_labmachine");
+                  this.refreshMarkers();
+                }
+              });
+            });
+
+          }
+        );
+      },
+      err=>{
+        console.log(err);
+      },
+      ()=>{
+
+      }
+    );
 
 
-    // adding to pvInfo array
+    // adding to pvInfo array 
+    /*
     this.pvInfo.push(new PVInfo(90, 34.0494611, -118.2636114, 0, "CCR"));
     this.pvInfo.push(new PVInfo(91, 34.0359263, -118.2479044, 0, "CCR"));
-    this.pvInfo.push(new PVInfo(92, 33.9903218, -118.2764002, 6548266, "Self"));
+    this.pvInfo.push(new PVInfo(92, 33.9903218, -118.2764002, 6548266, "Self"));*/
+
+    this.dataService.getPvInfo().subscribe(
+      data=>{
+        const pvs = data.data;
+        pvs.forEach(pv => {
+          this.pvInfo.push(new PVInfo(pv.pv_id, pv.lat, pv.lon, pv.lab_id, pv.lab_order));
+          this.refreshMarkers();
+        });
+      },
+      err=>{
+        console.log(err);
+      }
+    );
+    
 
     // adding to egcrInfo array
+    /*
     this.egcrInfo.push(new EGCR_Info(50, 34.0367087, -118.163447));
+    */
+
+    this.dataService.getEgcrInfo().subscribe(
+      data=>{
+        const egcrs = data.data;
+
+        egcrs.forEach(egcr => {
+          this.egcrInfo.push(new EGCR_Info(egcr.egcr_id, egcr.lat, egcr.lon));
+          this.refreshMarkers();
+        });
+      }, err=>{
+
+      }
+    );
 
 
 
@@ -346,8 +415,8 @@ export class MapPanelComponent implements OnInit {
 
   createMarkers(){
 
-    this.createLabMachineInfoMarkers();
-    this.createPvInfoMarkers();
+    //this.createLabMachineInfoMarkers();
+    //this.createPvInfoMarkers();
     this.createEgcrInfoMarkers();
 
     if(this.isMobile){
@@ -414,6 +483,14 @@ export class MapPanelComponent implements OnInit {
         e.LAB_order = Mode;
         tempPV = e;
         //console.log(e);
+
+        this.dataService.updatePvInfo({
+          pv_id: e.PV_ID,
+          lab_order: e.LAB_order,
+          lab_id: e.LAB_ID,
+          lat: e.Lat,
+          lon: e.Lon
+        }).subscribe();
       }
     });
 
@@ -432,6 +509,8 @@ export class MapPanelComponent implements OnInit {
         this.createArrowPolylines(tempPV.Lat, tempPV.Lon, tempLab.Lat, tempLab.Lon);   
       }
     })
+
+
 
     
     //alert("Assigned");
@@ -469,7 +548,7 @@ export class MapPanelComponent implements OnInit {
         this.modalRef.hide();
         return;
       }
-    })
+    });
   }
 
 }
