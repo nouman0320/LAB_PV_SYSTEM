@@ -1,6 +1,25 @@
 const app = require("./backend/app");
 const debug = require("debug")("node-angular");
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const http = require("http");
+
+
+const EgcrInfo = require('./backend/models/egcr-info');
+const Lab = require('./backend/models/lab');
+const MachineInfo = require('./backend/models/machine-info');
+const PvInfo = require('./backend/models/pv-info');
+
+
+
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+const firstInitialize = true; // set true to set the mongodb for first use after that make it false;
+// !! It will reset the database and add default examples so be cautious !!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+const mongoConnectionString = 'mongodb://127.0.0.1:27017/lab-pv-system';
+
+
 
 const normalizePort = val => {
   var port = parseInt(val, 10);
@@ -42,6 +61,79 @@ const onListening = () => {
   const bind = typeof port === "string" ? "pipe " + port : "port " + port;
   console.log("Listening on " + bind);
 };
+
+
+
+
+mongoose.connect(mongoConnectionString, function(){
+  if(firstInitialize){
+
+    
+    mongoose.connection.collections["counters"].drop( function(err) {
+      console.log('counters dropped');
+    });
+    mongoose.connection.collections["egcrinfos"].drop( function(err) {
+      console.log('egcrinfos dropped');
+    });
+    mongoose.connection.collections["labs"].drop( function(err) {
+      console.log('labs dropped');
+    });
+    mongoose.connection.collections["machineinfos"].drop( function(err) {
+      console.log('machineinfos dropped');
+    });
+    mongoose.connection.collections["pvinfos"].drop( function(err) {
+      console.log('pvinfos dropped');
+    });
+
+    new Lab({
+      lat: 34.0507194,
+      lon: -118.2688471,
+      city: "Los Angeles",
+      area: "1331",
+      phase: "W",
+      st: "7",
+      s_st: " ",
+      building: "12",
+      floor: "1st"
+    }).save();
+
+    new MachineInfo({
+      lab_id: 1,
+      pr1: 0,
+      pr2: 0,
+      dr1: 0,
+      dr2: 0,
+      ss: 0
+    }).save();
+
+    new EgcrInfo({
+      lat: 34.0367087, 
+      lon: -118.163447
+    }).save();
+
+    new EgcrInfo({
+      lat: 32.0367087, 
+      lon: -100.163447
+    }).save();
+
+
+    new PvInfo({
+      lat: 34.0494611, 
+      lon: -118.2636114,
+      lab_id: 0, 
+      lab_order: "CCR"
+    }).save();
+
+
+  }
+});
+
+mongoose.connection.on('error', console.error.bind(console, 'Database connection error:'));
+
+mongoose.connection.once('open', function () {
+  console.info('Successfully connected to the database');
+});
+
 
 const port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
