@@ -29,6 +29,10 @@ export class MapPanelComponent implements OnInit {
   Lon: number = -118.2437;
   Zoom: number = 12;
 
+  //
+
+  pollTime: number = 10; // time in seconds to sync with db
+
 
   // Data Arrays
   labMachineInfo: LabMachineInfo [] = [];
@@ -67,10 +71,6 @@ export class MapPanelComponent implements OnInit {
         } 
       }
     });
-
-
-    // getting data from webService
-    this.getData();
   }
 
   ngOnInit(){}
@@ -87,6 +87,20 @@ export class MapPanelComponent implements OnInit {
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
     
     this.createMarkers();
+
+
+    // getting data from webService
+    this.getData();
+    this.dataPoll();
+  }
+
+  dataPoll(){
+    //console.log("pv assign: "+this.dataService.pvAssignInProgress);
+    
+    if(!this.dataService.pvAssignInProgress){
+      this.getData();
+    }
+    setTimeout(this.dataPoll.bind(this), this.pollTime*1000);
   }
 
   clearData(){
@@ -178,6 +192,21 @@ export class MapPanelComponent implements OnInit {
     );
 
 
+    if(this.dataService.infoPresent){
+
+      this.labMachineInfo.forEach((lm)=>{
+        if(this.dataService.selectedLabMachine != null && lm.LAB_ID == this.dataService.selectedLabMachine.LAB_ID){
+          this.dataService.selectedLabMachine = lm;
+        }
+      });
+
+      this.pvInfo.forEach((pv)=>{
+        if(this.dataService.selectedPv != null && pv.PV_ID == this.dataService.selectedPv.PV_ID){
+          this.dataService.selectedPv = pv;
+        }
+      });
+
+    }
 
   }
 
