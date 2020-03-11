@@ -93,7 +93,7 @@ app.post("/api/pv-info/add", (req, res, next) => {
 // Method to update pv-info
 app.post("/api/pv-info/update", (req, res, next) => {
 
-  console.log("update called");
+  //console.log("update called");
   const pvItem = {
       "lat": req.body.lat,
       "lon": req.body.lon,

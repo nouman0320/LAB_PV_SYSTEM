@@ -1,7 +1,17 @@
 
 <div *ngIf="!this.isMobile" class="card ml-1" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0;">
     <div class="card-body">
-        <div #gmap style="position: absolute; top: 0; right: 0; bottom: 0; left: 0;"></div>
+      <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0;" id="wrapper">
+        <div  id="google_map">
+          <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0;" #gmap></div>
+        </div>
+     
+        <div id="over_map">
+          <div *ngIf="this.dataService.pvAssignInProgress" class="row no-gutters" style="background-color: rgba(0,0,0,0.5);border-radius: 10px;">
+            <p class="m-3" style="color: white;"> Now click on the Lab to assign <button class="btn btn-sm btn-outline-warning ml-2" (click)="this.dataService.pvAssignInProgress = false">Cancel</button></p>
+        </div>
+        </div>
+     </div>
     </div>
 </div>
 
