@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 
 export class WebService {
 
-  base_url: string = "http://localhost:3000/"
+  //base_url: string = "http://localhost:3000/"
+  base_url: string = "http://192.168.0.108:3000/"
 
   constructor(public http: HttpClient) { }
 

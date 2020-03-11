@@ -94,7 +94,6 @@ app.post("/api/pv-info/add", (req, res, next) => {
 app.post("/api/pv-info/update", (req, res, next) => {
 
   console.log("update called");
-  
   const pvItem = {
       "lat": req.body.lat,
       "lon": req.body.lon,
@@ -103,7 +102,9 @@ app.post("/api/pv-info/update", (req, res, next) => {
       "pv_id": req.body.pv_id
   };
 
-  PvInfo.findOneAndUpdate({"pv_id": req.body.pv_id}, pvItem, {new: true})
+  console.log(pvItem);
+
+  PvInfo.findOneAndUpdate({"pv_id": req.body.pv_id}, pvItem)
   .then(function (pv) {
 
 
