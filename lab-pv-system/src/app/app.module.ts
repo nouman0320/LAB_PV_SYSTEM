@@ -12,6 +12,11 @@ import { MapPanelComponent } from './components/desktop/main/map-panel/map-panel
 import { InformationPanelComponent } from './components/desktop/main/information-panel/information-panel.component';
 import { ControlPanelComponent } from './components/desktop/main/control-panel/control-panel.component';
 import { MobileMainComponent } from './components/mobile/mobile-main/mobile-main.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireModule } from 'angularfire2';
 
 @NgModule({
   declarations: [
@@ -26,7 +31,20 @@ import { MobileMainComponent } from './components/mobile/mobile-main/mobile-main
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ModalModule.forRoot()
+    AngularFireModule.initializeApp({
+      apiKey: "AIzaSyBPjGl2gNhiKKSYPHszXhKVorueDEwYyMg",
+      authDomain: "lab-pv-system.firebaseapp.com",
+      databaseURL: "https://lab-pv-system.firebaseio.com",
+      projectId: "lab-pv-system",
+      storageBucket: "lab-pv-system.appspot.com",
+      messagingSenderId: "848306702179",
+      appId: "1:848306702179:web:d4c90eea4ea8872190b556",
+      measurementId: "G-2WLXSWS08K"
+      }),
+    AngularFireAuthModule,
+    AngularFireDatabaseModule,
+    ModalModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]

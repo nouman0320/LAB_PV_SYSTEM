@@ -1,5 +1,12 @@
 const express = require("express");
+const webpush = require("web-push");
 const bodyParser = require("body-parser");
+var https = require('follow-redirects').https;
+var fs = require('fs');
+
+var {google} = require("googleapis");
+var MESSAGING_SCOPE = "https://www.googleapis.com/auth/firebase.messaging";
+var SCOPES = [MESSAGING_SCOPE];
 
 const EgcrInfo = require('./models/egcr-info');
 const Lab = require('./models/lab');
@@ -7,6 +14,8 @@ const MachineInfo = require('./models/machine-info');
 const PvInfo = require('./models/pv-info');
 
 const app = express();
+
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -22,6 +31,68 @@ app.use((req, res, next) => {
     "GET, POST, PATCH, DELETE, OPTIONS"
   );
   next();
+});
+
+app.post("/api/send-notification", (req, res, next) =>{
+
+  var title = req.body.title;
+  var body = req.body.body;
+
+  new Promise(function(resolve, reject) {
+    var key = require("./lab-pv-system.json");
+    var jwtClient = new google.auth.JWT(
+        key.client_email,
+        null,
+        key.private_key,
+        SCOPES,
+        null
+    );
+    jwtClient.authorize(function(err, tokens) {
+        if (err) {
+            reject(err);
+            return;
+        }
+        resolve(tokens.access_token);
+    });
+  }).then(token =>{
+    // start of sending notification
+
+    var options = {
+      'method': 'POST',
+      'hostname': 'fcm.googleapis.com',
+      'path': '/v1/projects/lab-pv-system/messages:send?',
+      'headers': {
+        'Authorization': 'Bearer '+token,
+        'Content-Type': 'application/json'
+      },
+      'maxRedirects': 20
+    };
+    
+    var req = https.request(options, function (res) {
+      var chunks = [];
+    
+      res.on("data", function (chunk) {
+        chunks.push(chunk);
+      });
+    
+      res.on("end", function (chunk) {
+        var body = Buffer.concat(chunks);
+        console.log(body.toString());
+      });
+    
+      res.on("error", function (error) {
+        console.error(error);
+      });
+    });
+    
+    var postData = JSON.stringify({"message":{"topic":"news","notification":{"title": title,"body":body},"webpush":{"headers":{"Urgency":"high"},"notification":{"body":title,"requireInteraction":"true","badge":"/badge-icon.png"}}}});
+    
+    req.write(postData);
+    
+    req.end();
+    // end of sending notification
+    res.status(200).json({token});
+  });
 });
 
 // end points for add data

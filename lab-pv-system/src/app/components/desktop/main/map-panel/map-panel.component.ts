@@ -6,6 +6,8 @@ import { LabMachineInfo } from 'src/app/models/lab-machine-info';
 import { PVInfo } from 'src/app/models/model.pv-info';
 import { EGCR_Info } from 'src/app/models/model.egcr-info';
 import { DataService } from 'src/app/serrvices/data.service';
+import { MessagingService } from 'src/app/serrvices/messaging.service';
+import { WebService } from 'src/app/serrvices/web.service';
 
 
 @Component({
@@ -54,8 +56,10 @@ export class MapPanelComponent implements OnInit {
 
   modalRef: BsModalRef;
 
+  message: any;
 
-  constructor(private modalService: BsModalService, public route: ActivatedRoute, public dataService: DataService) {
+
+  constructor(private modalService: BsModalService, public route: ActivatedRoute, public dataService: DataService, private msgService: MessagingService, public webService: WebService) {
 
     //getting lat, lon and zoom from parameters if present
     this.route.params.subscribe(params => {
@@ -73,7 +77,11 @@ export class MapPanelComponent implements OnInit {
     });
   }
 
-  ngOnInit(){}
+  ngOnInit(){
+    this.msgService.getPermission();
+    this.msgService.receiveMessage();
+    this.message = this.msgService.currentMessage;
+  }
 
   ngAfterViewInit() {
     //console.log(this.gmapElement);
@@ -456,6 +464,7 @@ export class MapPanelComponent implements OnInit {
 
   refreshMarkers(){
     //removing old markers
+    
     this.labMachineInfoMarkers.forEach((e)=>{
       e.setMap(null);
     });
@@ -523,11 +532,17 @@ export class MapPanelComponent implements OnInit {
       }
     });
 
+    
+
     this.labMachineInfo.forEach((e)=>{
       if(e.LAB_ID == LAB_ID){
         tempLab = e;
+        var notificationTitle = "New PV Assignment";
+        var notificationBody = "Process Validation (PV) ID: "+tempPV.PV_ID+" has been assigned to LAB ID: "+ e.LAB_ID
+        this.webService.sendNotification(notificationTitle, notificationBody).subscribe();
       }
     });
+
 
     this.pvInfoMarkers.forEach((e)=>{
       if(parseInt(e.getTitle().toString()) == PV_ID.valueOf()){
