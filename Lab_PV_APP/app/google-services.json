@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "848306702179",
+    "firebase_url": "https://lab-pv-system.firebaseio.com",
+    "project_id": "lab-pv-system",
+    "storage_bucket": "lab-pv-system.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848306702179:android:9533c4c91165b12e90b556",
+        "android_client_info": {
+          "package_name": "com.programrabbit.labpvapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848306702179-qubmr9r38oprlcebsc5dit5dmi5b1e4i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.programrabbit.labpvapp",
+            "certificate_hash": "97b4898a1348541cbada60ef6a7666b170ab52f9"
+          }
+        },
+        {
+          "client_id": "848306702179-7pdujo4q5u4agu87jad2tdoear40pf3t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGq0BgGPveD0597Zljl9ZR2Nq2zvpp4WE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848306702179-7pdujo4q5u4agu87jad2tdoear40pf3t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -510,12 +510,12 @@ export class MapPanelComponent implements OnInit {
   }
 
 
-  assignPvToLab(PV_ID: Number, LAB_ID: Number, Mode: String){
+  async assignPvToLab(PV_ID: Number, LAB_ID: Number, Mode: String){
 
     var tempPV;
     var tempLab;
 
-    this.pvInfo.forEach((e)=>{
+     await this.pvInfo.forEach((e)=>{
       if(e.PV_ID == PV_ID){
         e.LAB_ID = LAB_ID;
         e.LAB_order = Mode;
@@ -528,37 +528,35 @@ export class MapPanelComponent implements OnInit {
           lab_id: e.LAB_ID,
           lat: e.Lat,
           lon: e.Lon
-        }).subscribe();
-      }
-    });
+        }).subscribe( async data=>{
+          this.getData();
 
-    
+          await this.labMachineInfo.forEach((e)=>{
+            if(e.LAB_ID == LAB_ID){
+              tempLab = e;
+              var notificationTitle = "New PV Assignment";
+              var notificationBody = "Process Validation (PV) ID: "+tempPV.PV_ID+" has been assigned to LAB ID: "+ e.LAB_ID
+              //this.webService.sendNotification(notificationTitle, notificationBody).subscribe();
+            }
+          });
 
-    this.labMachineInfo.forEach((e)=>{
-      if(e.LAB_ID == LAB_ID){
-        tempLab = e;
-        var notificationTitle = "New PV Assignment";
-        var notificationBody = "Process Validation (PV) ID: "+tempPV.PV_ID+" has been assigned to LAB ID: "+ e.LAB_ID
-        this.webService.sendNotification(notificationTitle, notificationBody).subscribe();
-      }
-    });
+          await this.pvInfoMarkers.forEach((e)=>{
+            if(parseInt(e.getTitle().toString()) == PV_ID.valueOf()){
+              e.setIcon({
+                  url: 'assets/icons/red_triangle.png',
+                  anchor: new google.maps.Point(20, 20)
+              });
+              this.createArrowPolylines(tempPV.Lat, tempPV.Lon, tempLab.Lat, tempLab.Lon);   
+            }
+          })
 
-
-    this.pvInfoMarkers.forEach((e)=>{
-      if(parseInt(e.getTitle().toString()) == PV_ID.valueOf()){
-        e.setIcon({
-            url: 'assets/icons/red_triangle.png',
-            anchor: new google.maps.Point(20, 20)
         });
-        this.createArrowPolylines(tempPV.Lat, tempPV.Lon, tempLab.Lat, tempLab.Lon);   
       }
-    })
-
-
+    });
 
     
     //alert("Assigned");
-    this.refreshMarkers();
+    //await this.refreshMarkers();
     this.dataService.pvAssignInProgress = false;
   }
 
